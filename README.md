@@ -1,5 +1,5 @@
 # bfci
-BrainF*ck Compiling Interpreter.
+BrainF*ck Compiling Interpreter. I made it to run brainf*ck code at an acceptable speed.
 
 Doesn't compile to true bytecode, just to an internal data structure which is then interpreted.
 
