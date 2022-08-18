@@ -1,9 +1,9 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <termios.h>
-#include <string.h>
-#include <time.h>
 
+// Thanks to offirgolan at https://github.com/offirgolan/Shell/blob/master/tty-raw-mode.c
 void tty_raw_mode(void) {
 	struct termios tty_attr;
 	
@@ -109,19 +109,14 @@ void interpret(struct Instruction *program, unsigned char *tape) {
 	} while ((program++)->end == NO);
 }
 
-unsigned char tape[65536];
 struct Instruction program[65536];
+unsigned char tape[65536];
 
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		compile(argv[1], program);
 		tty_raw_mode();
-		
-		clock_t start = clock();
 		interpret(program, tape);
-		clock_t end = clock();
-		printf("\nTook %lu clock milliseconds\n", (end - start) * 1000 / CLOCKS_PER_SEC);
 	}
-	
 	return 0;
 }
