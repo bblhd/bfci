@@ -82,23 +82,6 @@ void compile(char *filename, struct Instruction *program) {
 	fclose(file);
 }
 
-void dissassemble(struct Instruction *program, char *filename) {
-	FILE *file = fopen(filename, "w");
-	if (file == NULL) return;
-	do {
-		if (program->in == YES) fputc(',', file); 
-		if (program->out == YES) fputc('.', file); 
-		if (program->math >= 0) for (int i = 0; i < program->math; i++) fputc('+', file); 
-		else for (int i = 0; i < -program->math; i++) fputc('-', file); 
-		if (program->seek >= 0) for (int i = 0; i < program->seek; i++) fputc('>', file); 
-		else for (int i = 0; i < -program->seek; i++) fputc('<', file); 
-		if (program->jump > 0) fputc('[', file); 
-		else if (program->jump < 0) fputc(']', file); 
-		fputc('\n', file); 
-	} while ((program++)->end == NO);
-	fclose(file);
-}
-
 void interpret(struct Instruction *program, unsigned char *tape) {
 	do {
 		if (program->out == YES) putc(*tape, stdout); 
