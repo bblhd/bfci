@@ -4,17 +4,16 @@
 #include <termios.h>
 
 // Thanks to offirgolan at https://github.com/offirgolan/Shell/blob/master/tty-raw-mode.c
-void tty_raw_mode(void) {
+void enableRawMode(void) {
 	struct termios tty_attr;
 	
-	tcgetattr(0,&tty_attr);
+	tcgetattr(0, &tty_attr);
 	
-	/* Set raw mode. */
-	tty_attr.c_lflag &= (~(ICANON|ECHO));
+	tty_attr.c_lflag &= ~(ICANON|ECHO);
 	tty_attr.c_cc[VTIME] = 0;
 	tty_attr.c_cc[VMIN] = 1;
 	
-	tcsetattr(0,TCSANOW,&tty_attr);
+	tcsetattr(0, TCSANOW, &tty_attr);
 }
 
 struct Instruction {
@@ -98,7 +97,7 @@ unsigned char tape[65536];
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		compile(argv[1], program);
-		tty_raw_mode();
+		enableRawMode();
 		interpret(program, tape);
 	}
 	return 0;
